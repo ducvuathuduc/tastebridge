@@ -4,5 +4,5 @@ contact_links:
     url: https://github.com/ducvuathuduc/tastebridge/blob/main/SECURITY.md
     about: Please report security issues privately as described in SECURITY.md.
   - name: Live demo
-    url: https://taste-bridge-vietnam.base44.app
+    url: https://tastebridge.pages.dev
     about: Try TasteBridge before filing an issue.

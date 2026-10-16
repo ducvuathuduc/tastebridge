@@ -3,6 +3,19 @@
 All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+
+## [1.0.0] - 2026-10-16
+
+### Added
+- Own backend on Cloudflare Workers (Hono, TypeScript): `/api/analyze` (faithful port of the Qloo `/search` + `/v2/insights` + 11-agent pipeline), `/api/localize-plan` (text or PDF upload), project CRUD across department tables, Entry Copilot.
+- Remote MCP server at `/mcp` (Streamable HTTP) with `analyze_market_entry`, `localize_business_plan`, `get_project`, `list_milestones`, `search_partners`.
+- Market-Entry OS in the web app: Brand Workspace (Overview, Roadmap kanban with auto-generated Vietnam playbook, Compliance with expiry warnings, Partners pipeline, Sites from the heat map, KPI charts, Activity log), Entry Copilot, Plan Localizer, Developers page. EN/VI throughout.
+- SQLite-backed Durable Object store with a department schema (D1-compatible); `docs/DATA_ARCHITECTURE.md` with ER diagram; `docs/MCP.md`.
+- Vitest suite and CI for web + worker.
+
+### Removed
+- Base44 SDK, Vite plugin, `base44/` functions and auth pages.
+
 ## [Unreleased]
 
 ### In progress
