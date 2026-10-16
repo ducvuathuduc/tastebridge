@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/ducvuathuduc/tastebridge/blob/main/SECURITY.md
+    about: Please report security issues privately as described in SECURITY.md.
+  - name: Live demo
+    url: https://taste-bridge-vietnam.base44.app
+    about: Try TasteBridge before filing an issue.
