@@ -307,7 +307,7 @@ export async function seedDemoProject(env: Env, ownerId: string) {
   const months = lastMonths(6);
   const stmts: Stmt[] = [
     d.prepare('UPDATE brand_projects SET stage = ? WHERE id = ?').bind('setup', id),
-    d.prepare("UPDATE milestones SET status = 'done' WHERE project_id = ? AND phase IN ('discover','validate')").bind(id),
+    d.prepare("UPDATE milestones SET status = 'done' WHERE project_id = ? AND phase IN ('discover','validate') AND sort > 0").bind(id),
     d.prepare("UPDATE milestones SET status = 'doing' WHERE project_id = ? AND phase = 'setup' AND sort IN (SELECT sort FROM milestones WHERE project_id = ? AND phase = 'setup' ORDER BY sort LIMIT 2)").bind(id, id)
   ];
   const doc = (kind: string, title: string, issuer: string, expires: string | null, status: string) =>

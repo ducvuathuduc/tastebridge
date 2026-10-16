@@ -67,7 +67,7 @@ export default function KpisTab({ project, act }) {
             ))}
           </div>
         )}
-        <form onSubmit={submit} className="mt-6 grid gap-2 sm:grid-cols-[130px_170px_1fr_1fr_auto]">
+        <form onSubmit={submit} className="mt-6 grid gap-2 sm:grid-cols-[180px_170px_1fr_1fr_auto]">
           <Input type="month" aria-label={t("kp.month")} value={form.month} onChange={(e) => setForm({ ...form, month: e.target.value })} />
           <Select value={form.metric} onChange={(e) => setForm({ ...form, metric: e.target.value })} options={METRICS.map((m) => ({ value: m, label: t(`metric.${m}`) }))} />
           <Input type="number" placeholder={t("kp.value")} value={form.value} onChange={(e) => setForm({ ...form, value: e.target.value })} />
