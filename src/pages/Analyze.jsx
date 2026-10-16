@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { RotateCcw, X } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { Link } from "react-router-dom";
+import { api } from "@/api/client";
 import { useLang } from "@/lib/i18n";
 import { agents } from "@/lib/agentsData";
 import { cities, categories, neighborhoods } from "@/lib/analyzeData";
@@ -55,14 +56,13 @@ export default function Analyze() {
     setResult(null);
     setEvidence(null);
     try {
-      const res = await base44.functions.invoke("analyzeMarketEntry", {
+      const data = await api.analyze({
         brandName: brand,
         city,
         category,
         lang,
         neighborhoods: (neighborhoods[city] || []).map((n) => n.name),
       });
-      const data = res?.data ?? res;
       if (!data || !data.result || !data.result.verdict) {
         throw new Error(data?.error || "empty");
       }
@@ -72,7 +72,7 @@ export default function Analyze() {
       setPhase("done");
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
-      const code = err?.response?.data?.code;
+      const code = err?.code;
       setErrorKey(code === "qloo_unavailable" ? "error.qloo" : "error.generic");
       setPhase("error");
     }
@@ -199,6 +199,18 @@ export default function Analyze() {
             </div>
           </div>
         </FadeUp>
+      )}
+
+      {phase === "done" && (
+        <div className="mt-8 flex flex-col items-start justify-between gap-3 rounded-lg border border-border p-4 sm:flex-row sm:items-center print:hidden">
+          <p className="text-sm text-muted-foreground">{t("os.analyze.toWorkspace")}</p>
+          <Link
+            to={`/workspace?new=1&brand=${encodeURIComponent(brandName)}&city=${cityId}&category=${categoryId}`}
+            className="btn-primary"
+          >
+            {t("os.analyze.toWorkspaceCta")}
+          </Link>
+        </div>
       )}
 
       {phase === "done" && (

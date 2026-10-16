@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { osTranslations } from "@/lib/i18n-os";
 
 const translations = {
   en: {
@@ -592,6 +593,8 @@ const translations = {
   },
 };
 
+for (const code of ["en", "vi"]) Object.assign(translations[code], osTranslations[code]);
+
 const LanguageContext = createContext({ lang: "en", setLang: () => {}, t: (k) => k });
 
 
@@ -612,7 +615,11 @@ export function LanguageProvider({ children }) {
       /* storage unavailable — keep in-memory choice */
     }
   };
-  const t = (key) => translations[lang][key] ?? translations.en[key] ?? key;
+  const t = (key, vars) => {
+    let s = translations[lang][key] ?? translations.en[key] ?? key;
+    if (vars) for (const [k, v] of Object.entries(vars)) s = s.replace(`{${k}}`, String(v));
+    return s;
+  };
   return <LanguageContext.Provider value={{ lang, setLang: changeLang, t }}>{children}</LanguageContext.Provider>;
 }
 
