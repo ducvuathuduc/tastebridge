@@ -1,0 +1,42 @@
+name: Feature request
+description: Suggest an idea for TasteBridge
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Who is this for (brand, operator, service provider, investor, agency) and what are they trying to do?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Analysis / agents
+        - Qloo integration
+        - Market-Entry OS (workspace, playbook, compliance, pipeline, sites, KPIs)
+        - Entry Copilot
+        - Ecosystem marketplace
+        - New market pack
+        - API / white-label
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: Data needed
+      description: What real data source would this rely on? TasteBridge does not show invented data as real.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered

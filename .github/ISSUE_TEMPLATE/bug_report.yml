@@ -1,0 +1,59 @@
+name: Bug report
+description: Something in TasteBridge does not work as expected
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please do **not** paste API keys, tokens or personal data.
+        Security issues go through SECURITY.md, not here.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you see, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to /analyze
+        2. Choose city and category
+        3. Enter brand "..."
+        4. See error
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Analyze flow / verdict
+        - Qloo evidence
+        - Neighborhood map
+        - Memo export
+        - Markets / Platform / Partners / Pricing / Investors pages
+        - Language (EN/VI)
+        - Auth / login
+        - Docs / repo
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: inputs
+    attributes:
+      label: Analysis inputs (if relevant)
+      placeholder: "brand: Blue Bottle Coffee · city: hcmc · category: coffee_tea · lang: en"
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: "Browser and version, OS, live app or local (npm run dev)"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console output or error message
+      render: shell
