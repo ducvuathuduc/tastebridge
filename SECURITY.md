@@ -4,7 +4,8 @@
 
 | Version | Supported |
 |---|---|
-| 0.2.x (Base44 app, `main`) | Yes |
+| 1.x (Cloudflare Worker + Pages, `main`) | Yes |
+| 0.2.x (Base44 prototype) | No |
 | 0.1.x (Next.js prototype, `nextjs-prototype` branch) | No |
 
 ## Reporting a vulnerability
@@ -17,15 +18,15 @@ Include what you found, how to reproduce it and the impact you expect. Do not in
 
 ## Scope
 
-- The live app at https://taste-bridge-vietnam.base44.app
+- The live app at https://tastebridge.pages.dev and the API/MCP server at https://tastebridge-api.huynhthanh.workers.dev
 - The `analyzeMarketEntry` backend function
 - This repository (including CI)
 
-Out of scope: denial-of-service and volume testing, social engineering, and issues in third-party platforms (Base44, Qloo) that should be reported to those vendors.
+Out of scope: denial-of-service and volume testing, social engineering, and issues in third-party platforms (Cloudflare, Qloo, LLM providers) that should be reported to those vendors.
 
 ## How secrets are handled
 
-- The Qloo API key is stored as a Base44 secret and read server-side only (`secrets.get('QLOO_API_KEY')`). It is never sent to the browser.
+- The Qloo and LLM API keys are Cloudflare Worker secrets, read server-side only (`env.QLOO_API_KEY`). They are never sent to the browser and never committed.
 - `.env` and `.env.*` files are git-ignored; `.env.example` holds placeholders only.
 - CI builds with placeholder values and needs no secrets.
 - The analysis function requires an authenticated user and validates and bounds all input and output.

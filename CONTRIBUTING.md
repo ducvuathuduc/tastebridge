@@ -5,7 +5,7 @@ Thanks for your interest. TasteBridge is an early-stage project built for the Ql
 ## Ground rules
 
 1. **No invented data shown as real.** Analyses must come from real Qloo responses. If data is missing, show that it is missing. Illustrative content must be labelled demo or sample.
-2. **No secrets in the repo.** Keys live in Base44 secrets or your local `.env.local` (git-ignored). Never paste them in issues, PRs, code, docs or screenshots.
+2. **No secrets in the repo.** Keys live in Cloudflare Worker secrets or your local `worker/.dev.vars` (git-ignored). Never paste them in issues, PRs, code, docs or screenshots.
 3. **Bilingual by default.** Every UI string needs an English and a Vietnamese entry in `src/lib/i18n.jsx`.
 4. **Be kind.** See the [Code of Conduct](CODE_OF_CONDUCT.md).
 
@@ -19,14 +19,14 @@ cp .env.example .env.local
 npm run dev
 ```
 
-To run the backend function you need a Base44 app with the `QLOO_API_KEY` secret set (`npx base44 dev` runs backend and frontend together). See the [README](README.md#getting-started) and [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
+To run the backend locally: `cd worker && npm install`, put `QLOO_API_KEY` and an LLM key (`GROQ_API_KEY`, `GEMINI_API_KEY` or `OPENAI_API_KEY`) in `worker/.dev.vars`, then `npx wrangler dev`. Run `npm test` in `worker/` before opening a PR. See the [README](README.md#getting-started) and [worker/README.md](worker/README.md).
 
 ## Where code lives
 
 | Path | What | Notes |
 |---|---|---|
-| `src/` | React frontend | Synced with the Base44 editor; discuss larger UI changes in an issue first |
-| `base44/functions/analyzeMarketEntry/entry.ts` | Analysis backend | Changes to agents, prompt or schema must update `docs/AGENTS.md` and `docs/API.md` |
+| `src/` | React frontend | Discuss larger UI changes in an issue first; every string needs EN and VI |
+| `worker/` | API, agents, MCP, data model | Changes to agents, prompt or schema must update `docs/AGENTS.md`, `docs/API.md` and `docs/DATA_ARCHITECTURE.md`; keep `npm test` green |
 | `docs/` | Architecture, agents, API, Qloo, roadmap, business | |
 | `.github/` | CI and templates | |
 

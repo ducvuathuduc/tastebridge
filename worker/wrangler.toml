@@ -1,0 +1,29 @@
+name = "tastebridge-api"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Non-secret configuration. Secrets (QLOO_API_KEY and one of GROQ_API_KEY / GEMINI_API_KEY / OPENAI_API_KEY)
+# are set with `wrangler secret put <NAME>` or in the Cloudflare dashboard — never committed.
+[vars]
+QLOO_BASE = "https://hackathon.api.qloo.com"
+ALLOWED_ORIGINS = "https://tastebridge.pages.dev,http://localhost:5173"
+GROQ_MODEL = "llama-3.3-70b-versatile"
+GEMINI_MODEL = "gemini-2.0-flash"
+OPENAI_MODEL = "gpt-4o-mini"
+
+# Relational store: SQLite-backed Durable Object running migrations/0001_init.sql.
+[[durable_objects.bindings]]
+name = "STORE"
+class_name = "TasteStore"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["TasteStore"]
+
+# Optional: bind Cloudflare D1 instead (same schema; apply with `wrangler d1 migrations apply`).
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "tastebridge"
+# database_id = "<your-d1-id>"
+# migrations_dir = "migrations"

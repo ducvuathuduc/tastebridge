@@ -11,12 +11,13 @@ Eleven specialist agents reason over **Qloo Taste AI** evidence and return a **G
 [![Qloo Taste AI](https://img.shields.io/badge/Powered%20by-Qloo%20Taste%20AI-6C3CE1)](https://www.qloo.com/)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
-[![Base44](https://img.shields.io/badge/Built%20on-Base44-111111)](https://base44.com/)
-[![Deno](https://img.shields.io/badge/Backend-Deno-000000?logo=deno&logoColor=white)](https://deno.com/)
+[![Cloudflare Workers](https://img.shields.io/badge/Backend-Cloudflare%20Workers-F38020?logo=cloudflare&logoColor=white)](https://workers.cloudflare.com/)
+[![Hono](https://img.shields.io/badge/API-Hono-E36002)](https://hono.dev/)
+[![MCP](https://img.shields.io/badge/MCP-Claude%20%7C%20ChatGPT-111111)](docs/MCP.md)
 [![EN/VI](https://img.shields.io/badge/i18n-EN%20%7C%20VI-DA251D)](#)
 [![CI](https://github.com/ducvuathuduc/tastebridge/actions/workflows/ci.yml/badge.svg)](https://github.com/ducvuathuduc/tastebridge/actions/workflows/ci.yml)
 
-**[Live demo](https://taste-bridge-vietnam.base44.app)** · **[Devpost](https://devpost.com/software/tastebridge-t2ygxn)** · **[Architecture](docs/ARCHITECTURE.md)** · **[Agents](docs/AGENTS.md)** · **[API](docs/API.md)** · **[Tiếng Việt](README.vi.md)**
+**[Live demo](https://tastebridge.pages.dev)** · **[MCP server](docs/MCP.md)** · **[Devpost](https://devpost.com/software/tastebridge-t2ygxn)** · **[Architecture](docs/ARCHITECTURE.md)** · **[Agents](docs/AGENTS.md)** · **[API](docs/API.md)** · **[Tiếng Việt](README.vi.md)**
 
 *Entry for the Qloo Agentic Hackathon.*
 
@@ -43,7 +44,7 @@ Eleven specialist agents reason over **Qloo Taste AI** evidence and return a **G
 
 ## Screenshots
 
-> These captures come from the v0.1 prototype (Oct 14, 2026). The live Base44 app at [taste-bridge-vietnam.base44.app](https://taste-bridge-vietnam.base44.app) runs the same analysis flow with a redesigned interface.
+> These captures come from the v0.1 prototype (Oct 14, 2026). The live app at [tastebridge.pages.dev](https://tastebridge.pages.dev) runs the same analysis flow with a redesigned interface plus the Market-Entry OS.
 
 | Landing | Agents at work |
 |---|---|
@@ -71,21 +72,23 @@ Pick a city (Ho Chi Minh City, Hanoi, Da Nang) and a category (F&B, coffee & tea
 ### 2. Verdict (live)
 A **GO / PILOT / NO-GO** call with confidence (0–100), an opportunity index, affinity scores (overall, cultural, audience, competition, price), top consumer segments, named competitors with threat level, risks with mitigations, launch channels, partner suggestions, a first-store score for every district on a map, and a market-entry memo you can copy, download or print. Every result shows the Qloo evidence it was grounded in.
 
-### 3. Market-Entry OS *(rolling out)*
-A verdict is where the work starts. The Market-Entry OS is being built now and turns a GO or PILOT into an executed launch:
+### 3. Market-Entry OS (live)
+A verdict is where the work starts. The Market-Entry OS turns a GO or PILOT into an executed launch:
 
 | Module | What it does | Status |
 |---|---|---|
-| **Brand Workspace** | One workspace per brand and market, holding every analysis, decision and document. | Rolling out |
-| **Playbook: Discover → Validate → Setup → Launch → Scale** | A staged entry plan with tasks, owners and gates for each phase. | Rolling out |
-| **Compliance docs tracker** | Tracks the licences, registrations and filings a launch needs, and where each one stands. | Rolling out |
-| **Partner pipeline** | Kanban of distributors, landlords, agencies and operators from first contact to signed. | Rolling out |
-| **Sites** | Candidate locations scored against the neighborhood heat map. | Rolling out |
-| **KPIs** | Launch and post-opening metrics the brand defines and tracks. | Rolling out |
-| **Entry Copilot agents** | Agents that draft, chase and summarise work inside the playbook. | Rolling out |
-| **Ecosystem marketplace** | Service providers, local operators and investors meet brands with a validated thesis. | Rolling out |
+| **Brand Workspace** (`/workspace`) | One workspace per brand and market: verdict history, roadmap, documents, partners, sites, KPIs, activity log. Per-browser demo account, no paid auth. | Live |
+| **Roadmap: Discover → Validate → Setup → Launch → Scale** | Kanban seeded with an auto-generated Vietnam playbook: trademark at IP Vietnam, investment/enterprise registration, FDI retail licence, food-safety certificate, import declarations and Vietnamese labels, lease, soft opening, KOL/TikTok, GrabFood/ShopeeFood/Zalo OA, second city. | Live |
+| **Compliance docs** | Licences, certificates and leases with expiry warnings (expired / ≤30 days). | Live |
+| **Partner pipeline** | Agent-ranked matches + directory → intro → term sheet → signed. | Live |
+| **Sites** | First-store shortlist built from the agent's district heat map. | Live |
+| **KPIs** | Monthly KPI and budget charts. | Live |
+| **Entry Copilot** | LLM assistant that sees the project's roadmap, documents, deals and latest verdict. | Live |
+| **Plan Localizer** (`/localize`) | Paste or upload (PDF/TXT) a business plan; agents return VND pricing, product/menu changes, channels, regulations and cultural risks with Qloo evidence. | Live |
+| **API + MCP** (`/developers`) | REST API and a remote MCP server so Claude / ChatGPT can call TasteBridge. | Live |
+| **Ecosystem marketplace** | Service providers, local operators and investors meet brands with a validated thesis. | Planned |
 
-The current app already shows Markets, Platform (Market Packs, Agent Registry, API), Partners and Investors pages; partner and pipeline content there carries a **DEMO DATA** badge until real partners onboard.
+Seeded examples (the fictional *Harbor & Pine Coffee (DEMO)* project, directory operators, demo KPIs) carry a **DEMO DATA** badge.
 
 ## The 11 agents
 
@@ -111,40 +114,37 @@ The same pass also produces 3–4 launch partners (name, role, fit 0–100) and 
 
 ```mermaid
 flowchart LR
-  subgraph Client["Browser: React + Vite (EN/VI)"]
-    UI["Analyze wizard<br/>city · category · brand"]
-    RV["Result views<br/>verdict · map · partners · memo"]
+  subgraph Client["Cloudflare Pages: React + Vite (EN/VI)"]
+    UI["Analyze · Workspace · Plan Localizer · Developers"]
+  end
+  subgraph AI["Claude / ChatGPT"]
+    MC["MCP client"]
   end
 
-  subgraph Base44["Base44 platform"]
-    AUTH["Auth (base44.auth.me)"]
-    FN["analyzeMarketEntry<br/>Deno serverless function"]
-    LLM["Core.InvokeLLM<br/>JSON-schema output"]
-    SEC[("Secrets<br/>QLOO_API_KEY")]
+  subgraph Worker["Cloudflare Worker: tastebridge-api (Hono)"]
+    API["/api/analyze · /api/localize-plan<br/>/api/projects · /api/projects/:id/copilot"]
+    MCP["/mcp<br/>Streamable HTTP"]
+    AG["11-agent pipeline<br/>+ validation"]
+    SEC[("Worker secrets<br/>QLOO_API_KEY · LLM key")]
+    DO[("TasteStore Durable Object<br/>SQLite · department schema")]
   end
 
   subgraph Qloo["Qloo Taste AI (hackathon API)"]
-    S1["GET /search<br/>brand entity"]
-    S2["GET /search<br/>category brands"]
-    S3["GET /search<br/>city places"]
-    INS["GET /v2/insights<br/>related brands + affinity"]
+    S["GET /search"]
+    INS["GET /v2/insights"]
   end
+  LLM["LLM: Groq / Gemini / OpenAI"]
 
-  UI -- "functions.invoke()" --> FN
-  FN --> AUTH
-  SEC -.-> FN
-  FN --> S1
-  FN --> S2
-  S1 --> INS
-  S2 --> INS
-  FN --> S3
-  INS --> EV["Evidence block<br/>match · tags · affinities · places"]
-  S3 --> EV
-  EV --> AP["11-agent pipeline<br/>01 Brand Profiler … 10 Localization Writer"]
-  AP --> VS["11 Verdict Synthesizer"]
-  LLM -.-> AP
-  VS --> VAL["Validate + clamp<br/>enums · 0–100 · lengths"]
-  VAL -- "ok · result · evidence · inputs" --> RV
+  UI -- "fetch + X-Owner-Id" --> API
+  MC -- "JSON-RPC" --> MCP
+  API --> AG
+  MCP --> AG
+  MCP --> DO
+  API --> DO
+  SEC -.-> AG
+  AG --> S
+  AG --> INS
+  AG --> LLM
 ```
 
 ### One analysis run
@@ -152,37 +152,32 @@ flowchart LR
 ```mermaid
 sequenceDiagram
   autonumber
-  actor U as User
-  participant W as Web app (React)
-  participant F as analyzeMarketEntry (Deno)
+  actor U as User / MCP client
+  participant W as Web app or MCP
+  participant F as Worker /api/analyze
   participant Q as Qloo API
-  participant L as Base44 InvokeLLM
+  participant L as LLM
+  participant D as TasteStore (SQLite)
 
   U->>W: City, category, brand name
-  W->>F: invoke(brandName, city, category, lang, neighborhoods)
-  F->>F: auth.me() and validate input (400 if invalid)
-  F->>Q: GET /search query=brand, types=urn:entity:brand, take=5
-  F->>Q: GET /search query=category term, types=urn:entity:brand, take=5
-  alt brand entity found
-    F->>Q: GET /v2/insights signal = brand entity
-  else no brand entity
-    F->>Q: GET /v2/insights signal = top 3 category entities
-  end
-  F->>Q: GET /search place term near city centre, radius 10, by popularity
-  Note over F: Build evidence block (match, tags, affinities, places)
-  F->>L: Prompt (brief + evidence + 11 agent roles) + JSON schema
+  W->>F: POST brandName, city, category, lang (project_id?)
+  F->>F: Validate input (400 if invalid), open agent_run
+  F->>Q: GET /search brand, then category brands
+  F->>Q: GET /v2/insights (brand entity or top-3 category entities)
+  F->>Q: GET /search places near the city centre
+  F->>L: Brief + Qloo evidence + 11 agent roles + JSON schema
   L-->>F: Structured verdict
-  F->>F: Validate verdict, clamp scores, drop unknown agents and districts
+  F->>F: Validate, clamp scores, drop unknown agents and districts
+  F->>D: Save verdict, Opportunity Index, matches, agent outputs, activity
   F-->>W: ok, result, evidence, inputs
-  W-->>U: Verdict, affinity, segments, heat map, partners, memo
-  Note over F,W: Any Qloo failure returns 502 qloo_unavailable and no analysis
+  Note over F,W: Any Qloo failure returns 502 qloo_unavailable and stores no analysis
 ```
 
-Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+Data model (departments, Mermaid ER diagram): [docs/DATA_ARCHITECTURE.md](docs/DATA_ARCHITECTURE.md). More: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Qloo integration
 
-Qloo is called **server-side only**, from `base44/functions/analyzeMarketEntry/entry.ts`, against `https://hackathon.api.qloo.com` with the `X-Api-Key` header (15 s timeout per call). The key lives in Base44 secrets and never reaches the browser.
+Qloo is called **server-side only**, from `worker/src/qloo.ts`, against `https://hackathon.api.qloo.com` with the `X-Api-Key` header (15 s timeout per call). The key is a Cloudflare Worker secret and never reaches the browser.
 
 | Step | Endpoint | Parameters | Used for |
 |---|---|---|---|
@@ -207,78 +202,77 @@ A `404` is treated as an honest empty result; any other error or timeout aborts 
 
 | Layer | Technology |
 |---|---|
-| Frontend | React 18, Vite 8, React Router 6, Tailwind CSS 3, shadcn/ui (Radix), Framer Motion, Recharts, React Leaflet |
-| State / data | TanStack Query, Base44 JS SDK (`@base44/sdk`) |
-| Backend | Base44 serverless function on Deno (`analyzeMarketEntry`) |
-| AI | Base44 `Core.InvokeLLM` with a strict JSON response schema |
+| Frontend | React 18, Vite 8, React Router 6, Tailwind CSS 3, shadcn/ui (Radix), Framer Motion, Recharts, React Leaflet — hosted on Cloudflare Pages |
+| API | Cloudflare Workers + Hono (TypeScript) |
+| MCP | Remote MCP server on the same Worker (`/mcp`, Streamable HTTP) |
+| Data | SQLite-backed Durable Object (`TasteStore`) with a department schema; D1-compatible |
+| AI | Groq (Llama 3.3 70B) / Gemini / OpenAI via Worker secrets, strict JSON schema + server-side validation |
 | Taste data | Qloo Taste AI: `/search`, `/v2/insights` |
-| i18n | In-house EN/VI dictionary (`src/lib/i18n.jsx`) |
-| Hosting | Base44 |
-| CI | GitHub Actions: lint + production build on Node 20 |
+| i18n | In-house EN/VI dictionary (`src/lib/i18n.jsx`, `src/lib/i18n-os.js`) |
+| Tests / CI | Vitest (Qloo and LLM mocked, store on node:sqlite); GitHub Actions builds web + worker |
 
 ## Project structure
 
 ```
 tastebridge/
-├── base44/
-│   ├── config.jsonc                     # Base44 project config (build/serve commands)
-│   ├── entities/User.jsonc              # Data schema
-│   └── functions/
-│       └── analyzeMarketEntry/entry.ts  # Qloo evidence + 11-agent pipeline + validation
+├── worker/                              # Cloudflare Worker API + MCP (Hono, TypeScript)
+│   ├── src/index.ts                     # Routes
+│   ├── src/analyze.ts  qloo.ts  llm.ts  # Qloo evidence + 11-agent pipeline + validation
+│   ├── src/localize.ts                  # Plan Localizer
+│   ├── src/mcp.ts                       # MCP server (Streamable HTTP)
+│   ├── src/db.ts  store.ts  playbook.ts # Department data model, Durable Object SQLite store, Vietnam playbook
+│   ├── migrations/0001_init.sql         # Schema (source of truth)
+│   └── test/                            # Vitest
 ├── src/
-│   ├── api/base44Client.js              # Base44 SDK client
-│   ├── pages/                           # Landing, Analyze, Markets, Platform, Partners, Pricing, Investors, About, auth pages
+│   ├── api/client.js                    # API client (X-Owner-Id per browser)
+│   ├── pages/                           # Landing, Analyze, Workspace, PlanLocalizer, Developers, Markets, Platform, Partners, Pricing, Investors, About
 │   ├── components/
-│   │   ├── analyze/                     # Wizard steps, agent timeline, verdict, cards, heat map, memo
+│   │   ├── analyze/  workspace/         # Wizard, verdict, heat map, memo · workspace tabs + Entry Copilot
 │   │   ├── landing/ markets/ partners/ platform/ investors/
 │   │   └── ui/                          # shadcn/ui primitives
-│   └── lib/
-│       ├── agentsData.js                # The 11 agents (EN/VI names and roles)
-│       ├── analyzeData.js               # Cities, categories, districts with coordinates
-│       ├── marketsData.js platformData.js partnersData.js
-│       └── i18n.jsx                     # EN/VI strings
-├── docs/
-│   ├── ARCHITECTURE.md  AGENTS.md  API.md  QLOO_INTEGRATION.md
-│   ├── ROADMAP.md  DEVELOPMENT.md  BUSINESS_ARCHITECTURE(.vi).md
-│   └── screenshots/
-├── .github/                             # CI workflow, issue and PR templates
-├── index.html  vite.config.js  tailwind.config.js  eslint.config.js
-└── package.json
+│   └── lib/                             # agents, cities/districts, i18n (EN/VI), local demo account
+├── docs/                                # DATA_ARCHITECTURE, MCP, ARCHITECTURE, AGENTS, API, QLOO_INTEGRATION, ROADMAP …
+├── scripts/                             # Pages fallback deploy
+└── .github/workflows/                   # ci.yml (web + worker), deploy.yml
 ```
 
 ## Getting started
 
-**Prerequisites:** Node.js 20+ and npm. A Base44 account and a Qloo API key to run the backend.
+**Prerequisites:** Node.js 22+ and npm. A Qloo API key and one LLM key (Groq, Gemini or OpenAI) to run the backend.
 
 ```bash
 git clone https://github.com/ducvuathuduc/tastebridge.git
 cd tastebridge
 npm install
-cp .env.example .env.local   # fill in your Base44 app id / URL
-npm run dev                  # frontend on http://localhost:5173
+npm run dev                          # web on http://localhost:5173 (talks to http://localhost:8787)
+
+cd worker
+npm install
+printf 'QLOO_API_KEY=...\nGROQ_API_KEY=...\n' > .dev.vars   # git-ignored
+npx wrangler dev                     # API + MCP on http://localhost:8787
+npm test
 ```
 
-Other scripts: `npm run build`, `npm run lint`, `npm run preview`.
-
-**Environment (frontend, `.env.local`):** `VITE_BASE44_APP_ID`, `VITE_BASE44_APP_BASE_URL`, optional `VITE_BASE44_FUNCTIONS_VERSION`. See [.env.example](.env.example).
-
-**Secrets (backend, set in Base44, never in the repo):** `QLOO_API_KEY`. The LLM call uses the Base44 Core integration, so no separate LLM key is needed in code.
-
-**Deploy with the Base44 CLI:**
+**Deploy:**
 
 ```bash
-npx base44 login
-npx base44 link        # link this folder to your Base44 app
-npx base44 dev         # optional: local backend + frontend together
-npx base44 deploy      # deploy site and functions
+cd worker
+npx wrangler secret put QLOO_API_KEY
+npx wrangler secret put GROQ_API_KEY       # or GEMINI_API_KEY / OPENAI_API_KEY
+npx wrangler deploy
+cd ..
+VITE_API_BASE=https://<your-worker>.workers.dev npm run build
+npx --prefix worker wrangler pages deploy dist --project-name tastebridge
 ```
+
+Secrets are never written to the repo. See [worker/README.md](worker/README.md) and [docs/MCP.md](docs/MCP.md).
 
 ## Roadmap
 
 | Horizon | Milestone |
 |---|---|
 | Now | Vietnam pack live: HCMC, Hanoi, Da Nang · 7 categories · 11 agents · EN/VI |
-| Next | Market-Entry OS: Brand Workspace, playbook, compliance tracker, partner pipeline, sites, KPIs, Entry Copilot |
+| Now | Market-Entry OS v1: Brand Workspace, playbook, compliance tracker, partner pipeline, sites, KPIs, Entry Copilot, Plan Localizer, API + MCP |
 | Then | Market Packs for **Thailand, Malaysia, Indonesia, Philippines** |
 | Platform | Agent Registry (Supplier Match, Legal Analyst, Hiring Planner), public API, white-label for trade agencies, banks and funds |
 
